@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+
+<title>reveal.js - The HTML Presentation Framework</title>
+
+<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+<meta name="author" content="Hakim El Hattab">
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="reveal.js/css/reveal.min.css">
+<link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
+<link rel="stylesheet" href="local.css">
+
+<!-- For syntax highlighting -->
+<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+if( window.location.search.match( /print-pdf/gi ) ) {
+  var link = document.createElement( 'link' );
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = 'reveal.js/css/print/pdf.css';
+  document.getElementsByTagName( 'head' )[0].appendChild( link );
+}
+</script>
+
+<!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+  <!-- Any section element inside of this container is displayed as a slide -->
+  <div class="slides">
+    <section>
+      <img src='images/firefoxos.png' align='left'></img>
+      <h1>Firefox OS</h1>
+      <h2>Webapps for Your Mobile Phone</h2>
+      <h3>http://anders.janmyr.com</h3>
+      <h3>@andersjanmyr</h3>
+      <h3>anders.janmyr@jayway.com</h3>
+    </section>
+
+    <section>
+        <h1>The First</h1>
+      <img src='images/firefox-zte.png' align='left'></img>
+    </section>
+
+    <section>
+      <img src='images/home-screen.png' align='left'></img>
+      <h2>Home Screen</h2>
+    </section>
+
+    <section>
+      <img src='images/phone-app.png' align='left'></img>
+      <h2>Phone App</h2>
+    </section>
+
+    <section>
+      <img src='images/contacts.png' align='left'></img>
+      <h2>Contacts</h2>
+    </section>
+
+    <section>
+      <img src='images/music.png' align='left'></img>
+      <h2>Music Player</h2>
+    </section>
+
+    <section>
+      <img src='images/notifications.png' align='left'></img>
+      <h2>Notifications</h2>
+    </section>
+
+    <section>
+      <img src='images/marketplace.png' align='left'></img>
+    </section>
+
+    <section>
+      <img src='images/galacticans.png' align='left'></img>
+      <h2>Galacticans</h2>
+    </section>
+
+    <section>
+      <img src='images/architecture.png'></img>
+    </section>
+
+    <section>
+      <img src='images/architecture2.png'></img>
+    </section>
+
+    <section>
+      <img src='images/html5-apis.png' ></img>
+    </section>
+
+    <section>
+      <img src='images/responsivedesign.png' ></img>
+    </section>
+
+    <section>
+      <img src='images/start.png'></img>
+    </section>
+
+    <section>
+      <img src='images/appmanager.png'></img>
+    </section>
+
+    <section>
+      <h1>App Manifest</h1>
+      <pre><code class='javascript'>{
+  "name": "FxOS Weather Local",
+  "description": "A Firefox OS Weather App",
+  "launch_path": "/",
+  "icons": {
+    "128": "/icons/128x128.png"
+  },
+  "default_locale": "en",
+  "permissions": {
+    "geolocation" {
+      "description": "Access to geolocation"
+    }
+  }
+}
+      </code></pre>
+    </section>
+
+    <section data-markdown>
+      # App Manifest
+
+      activities, appcache_path,  chrome, csp, default_locale, *description*,
+      developer, fullscreen, *icons*, installs_allowed_from, launch_path,
+      locales, messages, *name*, orientation, origin, permissions, redirects,
+      type, version
+
+    </section>
+
+    <section>
+       <h1>Installation API</h1>
+      <pre><code class='javascript'>
+  navigator.mozApps.install()
+  navigator.mozApps.installPackage()
+  navigator.mozApps.getSelf()
+  navigator.mozApps.getInstalled()
+  navigator.mozApps.checkInstalled()
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Installation API</h1>
+      <pre><code class='javascript'>
+var request = window.navigator.mozApps.install(manifestUrl);
+request.onsuccess = function () {
+  // Save the App object that is returned
+  var appRecord = this.result;
+  alert('Installation successful!');
+};
+request.onerror = function () {
+  // Display the error information from the DOMError object
+  alert('Install failed, error: ' + this.error.name);
+};
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>App Cache</h1>
+      <pre><code>CACHE MANIFEST
+# DATE 20130929_174017
+CACHE:
+index.html
+css/main.css
+css/images/icons-36-white.png
+lib/word-maestro.js
+...
+NETWORK:
+*
+FALLBACK:
+/upload  upload-offline.html
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>App Cache</h1>
+      <pre><code>
+      &lt;html manifest="wordmaestro.appcache"&gt;
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Geolocation</h1>
+      <pre><code class='javascript'>// Getting the current location
+navigator.geolocation.getCurrentPosition(function(position) {
+  do_something(position.coords.latitude, position.coords.longitude);
+});
+
+// Watching the location
+var watchID = navigator.geolocation.watchPosition(function(position) {
+  do_something(position.coords.latitude, position.coords.longitude);
+});
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Device Storage</h1>
+      <pre><code class='javascript'>var pics = navigator.getDeviceStorage('pictures');
+
+// Let's browse all the images available
+var cursor = pics.enumerate();
+cursor.onsuccess = function () {
+  var file = this.result;
+  // Once we found a file we check if there is other results
+  if (!this.done) {
+    this.continue(); // Next result
+  }
+}
+cursor.onerror = function () { // Handle error
+}
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>WebSMS</h1>
+      <pre><code class='javascript'>// Simple SMS send
+var request = navigator.mozMobileMessage.send(number, message);
+
+// Getting a single message
+ MozMobileMessageManager.getMessage()
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>WebMMS</h1>
+      <pre><code class='javascript'>var message = {
+  receivers: numbers,
+  subject: "Pic from my wedding"
+  smil: '&lt;smil>&lt;body>&lt;par>&lt;img src="wedding.jpg" />' +
+        '&lt;text src="txt" />/&lt;par>&lt;/body>&lt;/smil>',
+  attachments: [ { location: 'txt',
+      content : new Blob(['Me and my wife'], {type: 'text/plain'})
+    }, {
+      location: 'wedding.jpg', content : file
+    } ] }
+
+// Send the message
+navigator.mozMobileMessage.sendMMS(message);
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Web Telephony</h1>
+      <pre><code class='javascript'>// Telephony object
+var tel = navigator.mozTelephony;
+
+// Check if the phone is muted (read/write property)
+console.log(tel.muted);
+
+// Check if the speaker is enabled (read/write property)
+console.log(tel.speakerEnabled);
+      </code></pre>
+    </section>
+    <section>
+      <h1>Web Telephony</h1>
+      <pre><code class='javascript'>// Place a call
+var call = tel.dial("123456789");
+
+// Above options as direct events
+call.onconnected = function () {
+    // Call was connected
+};
+
+call.ondisconnected = function () {
+    // Call was disconnected
+};
+// Hang up call
+call.hangUp();
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Permissions</h1>
+      <img src='images/Permissions.png'></img>
+    </section>
+
+    <section>
+      <h1>CSP</h1>
+      <h2>Content Security Policy (CSP)</h2>
+      <pre><code class='javascript'>
+"default-src *; script-src 'self';
+object-src 'none'; style-src 'self'"
+      </code></pre>
+    </section>
+
+    <section>
+      <img src='stupid-questions.jpg' align='right'></img>
+      <h1>Questions</h1>
+      <h3>http://anders.janmyr.com</h3>
+      <h3>@andersjanmyr</h3>
+      <h3>anders.janmyr@jayway.com</h3>
+    </section>
+
+    <section data-markdown>
+      ## Resources
+
+      ### Presentation
+
+      http://andersjanmyr.github.io/firefoxos-for-your-mobile-phone
+
+    </section>
+
+  </div>
+
+</div>
+
+<script src="reveal.js/lib/js/head.min.js"></script>
+<script src="reveal.js/js/reveal.min.js"></script>
+
+<script>
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+controls: true,
+progress: true,
+history: true,
+center: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+// Parallax scrolling
+// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+// parallaxBackgroundSize: '2100px 900px',
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+{ src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+{ src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+]
+});
+
+</script>
+
+</body>
+</html>
